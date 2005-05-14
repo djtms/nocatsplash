@@ -196,12 +196,10 @@ guint http_request_read (http_request *h) {
     guint tot_req_size;
     gchar *hdr_end = NULL;
 
-    // g_message("entering http_request_read");
-    for (t = 0, n = BUFSIZ; h->buffer->len < MAX_REQUEST_SIZE &&
-	    (hdr_end = strstr(h->buffer->str, "\r\n\r\n")) == NULL; t += n ) {
-	// g_message("entering read loop");
+    for (t = 0, n = BUFSIZ;
+	    h->buffer->len < MAX_REQUEST_SIZE && hdr_end == NULL && n > 0; 
+	    t += n ) {
 	r = g_io_channel_read( h->sock, buf, BUFSIZ, &n );
-	// g_message("read loop: read %d bytes of %d (%d)", n, BUFSIZ, r);
 	if (r != G_IO_ERROR_NONE) {
 	    g_warning( "read_http_request failure: %m" );
 	    g_free(buf);
@@ -209,6 +207,7 @@ guint http_request_read (http_request *h) {
 	}
 	buf[n] = '\0';
 	g_string_append(h->buffer, buf);
+	hdr_end = strstr(h->buffer->str, "\r\n\r\n");
     }
     http_parse_header( h, h->buffer->str );
     c_len_hdr = HEADER("Content-length");
@@ -218,10 +217,8 @@ guint http_request_read (http_request *h) {
     	c_len = atoi( c_len_hdr );
     }
     tot_req_size = hdr_end - h->buffer->str + 4 + c_len;
-    for (; t < tot_req_size; t += n ) {
-	// g_message("entering read loop");
+    for (n = BUFSIZ; t < tot_req_size && n > 0; t += n ) {
 	r = g_io_channel_read( h->sock, buf, BUFSIZ, &n );
-	// g_message("read loop: read %d bytes of %d (%d)", n, BUFSIZ, r);
 	if (r != G_IO_ERROR_NONE) {
 	    g_warning( "read_http_request failure: %m" );
 	    g_free(buf);
