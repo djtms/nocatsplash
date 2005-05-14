@@ -123,6 +123,9 @@ void daemonize(void) {
     /* write PID to lockfile */
     fprintf(pid_file, "%d\n", getpid());
 
+    /* fssek() in order to sync the pid file */
+    fseek(pid_file, 0L, SEEK_CUR);
+
     // fclose(lfp);
 
     // signal(SIGCHLD,SIG_IGN); /* ignore child */
