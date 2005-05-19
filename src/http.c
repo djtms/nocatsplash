@@ -87,13 +87,22 @@ http_request *http_request_new ( GIOChannel *sock ) {
 }
 
 void http_request_free ( http_request *h ) {
-    g_free( h->uri );
-    g_free( h->method );
-    g_hash_free( h->header );
-    g_hash_free( h->query );
-    g_hash_free( h->response );
-    g_string_free( h->buffer, 1 );
-    g_io_channel_unref( h->sock );
+    if (h->uri)
+	g_free( h->uri );
+    if (h->method)
+	g_free( h->method );
+    if (h->header)
+	g_hash_free( h->header );
+    if (h->query)
+	g_hash_free( h->query );
+    if (h->response)
+	g_hash_free( h->response );
+    if (h->buffer)
+	g_string_free( h->buffer, 1 );
+    if (h->sock) {
+	g_io_channel_close( h->sock );
+	g_io_channel_unref( h->sock );
+    }
     g_free( h );
 }
 
@@ -102,6 +111,9 @@ GHashTable *parse_query_string( gchar *query ) {
     gchar **items, *key, *val;
     guint i;
 
+    if (!query)
+	return data;
+    
     items = g_strsplit( query, "&", 0 );
     for ( i = 0; items[i] != NULL; i++ ) {
 	key = items[i];
@@ -130,9 +142,19 @@ GHashTable *http_parse_header (http_request *h, gchar *req) {
     gchar **lines, **items, *key, *val, *p;
     guint i;
 
-    lines = g_strsplit( req, "\r\n", 0 );
-    items = g_strsplit( lines[0], " ", 3 );
+    h->method = NULL;
+    h->uri    = NULL;
+    h->header = head;
 
+    if (req == NULL)
+	return head;
+
+    lines = g_strsplit( req, "\r\n", 0 );
+
+    if (lines == NULL || lines[0] == NULL)
+	return head;
+
+    items = g_strsplit( lines[0], " ", 3 );
     h->method = g_strdup( items[0] );
     h->uri    = g_strdup( items[1] );
     // g_message( "method: %s", h->method );
@@ -205,10 +227,18 @@ guint http_request_read (http_request *h) {
 	    g_free(buf);
 	    return 0;
 	}
-	buf[n] = '\0';
-	g_string_append(h->buffer, buf);
-	hdr_end = strstr(h->buffer->str, "\r\n\r\n");
+	if (n) {
+	    buf[n] = '\0';
+	    g_string_append(h->buffer, buf);
+	    hdr_end = strstr(h->buffer->str, "\r\n\r\n");
+	}
     }
+
+    if (!t) {
+	g_free(buf);
+	return 0;
+    }
+    
     http_parse_header( h, h->buffer->str );
     c_len_hdr = HEADER("Content-length");
     if (c_len_hdr == NULL) {

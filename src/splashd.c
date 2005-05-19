@@ -28,16 +28,14 @@ gboolean check_peers( void *dummy ) {
 /************* Connection handlers ************/
 
 gboolean handle_read( GIOChannel *sock, GIOCondition cond, http_request *h ) {
-    g_debug( "entering handle_read" );
-    http_request_read( h );
+    g_debug( "entering handle_read");
+    
+    if (http_request_read( h )) {
+	if (! http_request_ok(h))
+	    return TRUE;
+	handle_request(h);
+    }
 
-    if (! http_request_ok(h))
-	return TRUE;
-
-    handle_request(h);
-
-    g_io_channel_close( h->sock );
-    g_io_channel_unref( h->sock );
     http_request_free( h );
     g_debug( "exiting handle_read" );
     return FALSE;
@@ -57,7 +55,6 @@ gboolean handle_accept( GIOChannel *sock, GIOCondition cond, void *dummy ) {
     g_io_add_watch( conn, G_IO_IN, (GIOFunc) handle_read, req );
     return TRUE;
 }
-
 
 /************* main ************/
 
