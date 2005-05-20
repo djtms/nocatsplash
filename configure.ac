@@ -59,12 +59,15 @@ AC_ARG_WITH(mode,
     ],
     splashd_mode="open.c"
 )
-AC_SUBST(SPLASHD_MODE, "$splashd_mode")
 
 AC_ARG_WITH(remote-splash,
-    [  --with-remote-splash   Fetch splash page from elsewhere with libghttp. ],
-    AC_CHECK_LIB([ghttp], [ghttp_request_new])
+    [  --with-remote-splash   Fetch splash page from a configurable service. ],
+    [ splashd_mode="../libghttp/libghttp.a $splashd_mode"; 
+      splashd_subdirs="libghttp" ]
 )
+
+AC_SUBST(SPLASHD_MODE,	    "$splashd_mode")
+AC_SUBST(SPLASHD_SUBDIRS,   "$splashd_subdirs")
 
 # with ghttpd?
 AC_ARG_WITH(ghttpd,
@@ -118,7 +121,35 @@ eval "NC_PGP_PATH=`eval echo ${pgpdir}`"
 AC_DEFINE_UNQUOTED(NC_PGP_PATH, "$NC_PGP_PATH",
     [Where to find our PGP keys?])
 
+# libghttp configuration details
+GHTTP_MAJOR_VERSION=1
+GHTTP_MINOR_VERSION=0
+GHTTP_MICRO_VERSION=9
+GHTTP_VERSION=$GHTTP_MAJOR_VERSION.$GHTTP_MINOR_VERSION.$GHTTP_MICRO_VERSION
+
+AC_SUBST(GHTTP_MAJOR_VERSION)
+AC_SUBST(GHTTP_MINOR_VERSION)
+AC_SUBST(GHTTP_MICRO_VERSION)
+AC_SUBST(GHTTP_VERSION)
+
+VERSION=$GHTTP_VERSION
+
+AC_DEFINE_UNQUOTED(GHTTP_MAJOR_VERSION, $GHTTP_MAJOR_VERSION)
+AC_DEFINE_UNQUOTED(GHTTP_MINOR_VERSION, $GHTTP_MINOR_VERSION)
+AC_DEFINE_UNQUOTED(GHTTP_MICRO_VERSION, $GHTTP_MICRO_VERSION)
+
+AM_INIT_AUTOMAKE(libghttp, $VERSION)
+
+GHTTP_LIBDIR='-L${libdir}'
+GHTTP_INCLUDEDIR='-I${includedir}'
+GHTTP_LIBS="-lghttp"
+
+AC_SUBST(GHTTP_LIBDIR)
+AC_SUBST(GHTTP_LIBS)
+AC_SUBST(GHTTP_INCLUDEDIR)
+
 # Build makefiles
 AC_CONFIG_FILES([Makefile
-                 src/Makefile])
+                 src/Makefile
+		 libghttp/Makefile])
 AC_OUTPUT

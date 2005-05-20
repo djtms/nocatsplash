@@ -1,4 +1,4 @@
-SUBDIRS = src
+SUBDIRS = @SPLASHD_SUBDIRS@ src
 sysconf_DATA = nocat.conf
 man_MANS = man/splashd.8 man/nocat.conf.5
 pkglibexec_SCRIPTS = @libexecscripts@

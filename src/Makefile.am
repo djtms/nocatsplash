@@ -1,5 +1,5 @@
 AM_CFLAGS = @CFLAGS@ @GLIB_CFLAGS@ -Wall
-LIBS = @LIBS@ @GLIB_LIBS@ 
+LIBS = @LIBS@ @GLIB_LIBS@
 sbin_PROGRAMS = splashd @GHTTPD_PROGRAM@
 EXTRA_PROGRAMS = ghttpd
 splashd_SOURCES = splashd.c
