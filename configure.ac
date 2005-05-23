@@ -63,7 +63,9 @@ AC_ARG_WITH(mode,
 AC_ARG_WITH(remote-splash,
     [  --with-remote-splash   Fetch splash page from a configurable service. ],
     [ splashd_mode="$splashd_mode ../libghttp/libghttp.a"; 
-      splashd_subdirs="libghttp" ]
+      splashd_subdirs="libghttp";
+      HAVE_LIBGHTTP=1;
+      AC_SUBST(HAVE_LIBGHTTP) ]
 )
 
 AC_SUBST(SPLASHD_MODE,	    "$splashd_mode")

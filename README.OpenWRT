@@ -11,10 +11,10 @@ If you already have a working OpenWRT setup, you can install NoCatSplash with
 the remote splash option as follows:
 
 $ ssh root@<ip-of-OpenWRT>
-$ ipkg update
-$ ipkg install glib1 iptables kmod-iptables-extra
-$ wget http://aleron.dl.sourceforge.net/projects/nocatsplash/files/nocatsplash_0.93.mipsel.ipkg
-$ ipkg install nocatsplash_0.93.mipsel.ipkg
+# ipkg update
+# ipkg install glib1 iptables kmod-iptables-extra
+# wget http://nocat.net/~sderle/nocatsplash_0.93pre2-2_mipsel.ipk
+# ipkg install nocatsplash_0.93pre2-2_mipsel.ipk
 
 NoCatSplash should install without problems, and set up an init script in
 /etc/init.d, to load splashd on boot. The final step is to configure
@@ -27,7 +27,7 @@ AllowedWebHosts
 
 The following nocat.conf entries need to be set for the OpenWRT hardware, *if*
 you are not running OpenWRT on a Linksys WRT54G-type device. Otherwise the
-defaults should suffice.
+defaults *should* suffice -- but if not, try fixing these first.
 
 ExternalDevice
 InternalDevice
