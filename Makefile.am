@@ -6,7 +6,7 @@ EXTRA_SCRIPTS = libexec/iptables/access.fw libexec/iptables/clear.fw libexec/ipt
 htdocs_DATA = htdocs/splash.html htdocs/status.html htdocs/test.html
 images_DATA = htdocs/images/auth_logo.gif htdocs/images/continue.gif htdocs/images/login.gif htdocs/images/logout.gif htdocs/images/register.gif htdocs/images/reset.gif htdocs/images/skip.gif htdocs/images/update.gif
 pgp_DATA = pgp/trustedkeys.gpg
-EXTRA_DIST = $(EXTRA_SCRIPTS) $(images_DATA) $(htdocs_DATA) $(pgp_DATA) $(man_MANS) nocat.conf.in rc.nocat
+EXTRA_DIST = $(EXTRA_SCRIPTS) $(images_DATA) $(htdocs_DATA) $(pgp_DATA) $(man_MANS) nocat.conf.in rc.nocat ipkg/control ipkg/rules ipkg/patches ipkg/patches/nocat-conf.patch ipkg/patches/openwrt-firewall.patch ipkg/patches/init-d.patch ipkg/Config.in README.uClibc README.OpenWRT
 CLEANFILES = $(sysconf_DATA)
 
 nocat.conf: nocat.conf.in
