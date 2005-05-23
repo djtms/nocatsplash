@@ -1,4 +1,4 @@
-# generated automatically by aclocal 1.9.2 -*- Autoconf -*-
+# generated automatically by aclocal 1.9.4 -*- Autoconf -*-
 
 # Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004
 # Free Software Foundation, Inc.
@@ -18,7 +18,7 @@ dnl AM_PATH_GLIB([MINIMUM-VERSION, [ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND [, MO
 dnl Test for GLIB, and define GLIB_CFLAGS and GLIB_LIBS, if "gmodule" or 
 dnl gthread is specified in MODULES, pass to glib-config
 dnl
-AC_DEFUN([AM_PATH_GLIB],
+AC_DEFUN(AM_PATH_GLIB,
 [dnl 
 dnl Get the cflags and libraries from the glib-config script
 dnl
@@ -237,7 +237,7 @@ AC_DEFUN([AM_AUTOMAKE_VERSION], [am__api_version="1.9"])
 # Call AM_AUTOMAKE_VERSION so it can be traced.
 # This function is AC_REQUIREd by AC_INIT_AUTOMAKE.
 AC_DEFUN([AM_SET_CURRENT_AUTOMAKE_VERSION],
-	 [AM_AUTOMAKE_VERSION([1.9.2])])
+	 [AM_AUTOMAKE_VERSION([1.9.4])])
 
 # AM_AUX_DIR_EXPAND
 
