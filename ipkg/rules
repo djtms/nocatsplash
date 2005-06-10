@@ -66,6 +66,7 @@ $(PKG_IPK): $(PKG_BUILD_DIR)/src/splashd
 		DESTDIR=$(PKG_IPK_DIR) install
 	$(STRIP) $(PKG_IPK_DIR)/usr/sbin/splashd
 	mkdir -p $(PKG_IPK_DIR)/etc/init.d
+	chmod +x $(PKG_BUILD_DIR)/S60nocat
 	cp $(PKG_BUILD_DIR)/S60nocat $(PKG_IPK_DIR)/etc/init.d
 	mkdir -p $(PACKAGE_DIR)
 	$(IPKG_BUILD) $(PKG_IPK_DIR) $(PACKAGE_DIR)
